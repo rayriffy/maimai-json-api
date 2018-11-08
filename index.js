@@ -1,5 +1,5 @@
 import bodyparser from 'body-parser'
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import db from 'mysql'
 import express from 'express'
 
@@ -9,7 +9,7 @@ const app = express()
 
 app.use(bodyparser.json())
 
-dotenv.config()
+// dotenv.config()
 
 const connection = db.createConnection({
   host: process.env.DB_HOST,
