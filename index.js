@@ -23,7 +23,7 @@ const connection = db.createConnection({
 
 app.post('/api', (req, res) => {
   const category = req.body.req
-  const data = []
+  let data = []
 
   connection.connect()
 
