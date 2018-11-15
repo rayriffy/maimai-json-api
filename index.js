@@ -19,13 +19,14 @@ const connection = db.createConnection({
   database: process.env.DB_DATABASE
 });
 
+connection.connect()
+
 // Process
 
 app.post('/api', (req, res) => {
   const category = req.body.req
   let data = []
 
-  connection.connect()
 
   connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `' + category + '` WHERE 1 ORDER BY RAND() LIMIT 5', (err, rows, fields) => {
     if (err) {
@@ -70,8 +71,8 @@ app.post('/api', (req, res) => {
     }
     res.send(data);
   })
-
-  connection.end()
 })
+
+connection.end()
 
 app.listen(process.env.PORT);
