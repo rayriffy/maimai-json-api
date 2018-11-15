@@ -3,6 +3,8 @@ import bodyparser from 'body-parser'
 import db from 'mysql'
 import express from 'express'
 
+require('heroku-self-ping')("http://maimai-json.rayriffy.com");
+
 // Configuration
 
 const app = express()
