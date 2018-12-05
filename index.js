@@ -76,16 +76,9 @@ app.post('/api', (req, res) => {
   })
 })
 
-app.get('/all', (req, res) => {
-  let data = {
-    "pops": [],
-    "nico": [],
-    "toho": [],
-    "sega": [],
-    "game": [],
-    "orig": []
-  }
-
+app.post('/api/all', (req, res) => {
+  const category = req.body.req
+  let data = []
 
   let connection = db.createConnection({
     host: process.env.DB_HOST,
@@ -100,9 +93,7 @@ app.get('/all', (req, res) => {
       console.log(err)
   })
 
-  // POPS
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `pops` WHERE 1', (err, rows, fields) => {
+  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `' + category + '` WHERE 1', (err, rows, fields) => {
     if (err) {
       data.push({
         "reponse": "error",
@@ -112,7 +103,7 @@ app.get('/all', (req, res) => {
     else {
       rows = JSON.parse(JSON.stringify(rows))
       rows.forEach(row => {
-        data.pops.push(
+        data.push(
           {
             "name": {
               "en": row.name_en,
@@ -142,238 +133,12 @@ app.get('/all', (req, res) => {
         )
       })
     }
-    console.log("HIT POPS")
+
+    connection.end()
+
+    res.send(data)
   })
-
-  // NICO
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `nico` WHERE 1', (err, rows, fields) => {
-    if (err) {
-      data.push({
-        "reponse": "error",
-        "remark": err
-      })
-    }
-    else {
-      rows = JSON.parse(JSON.stringify(rows))
-      rows.forEach(row => {
-        data.nico.push(
-          {
-            "name": {
-              "en": row.name_en,
-              "jp": row.name_jp
-            },
-            "artist": {
-              "en": row.artist_en,
-              "jp": row.artist_jp
-            },
-            "image_url": row.image_url,
-            "version": row.version,
-            "bpm": row.bpm,
-            "level": {
-              "easy": row.level_easy,
-              "basic": row.level_basic,
-              "advanced": row.level_advanced,
-              "expert": row.level_expert,
-              "master": row.level_master,
-              "remaster": row.level_remaster
-            },
-            "listen": {
-              "youtube": row.listen_youtube,
-              "niconico": row.listen_niconico
-            },
-            "regionlocked": row.regionlocked
-          }
-        )
-      })
-    }
-    console.log("HIT NICO")
-  })
-
-  // TOHO
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `toho` WHERE 1', (err, rows, fields) => {
-    if (err) {
-      data.push({
-        "reponse": "error",
-        "remark": err
-      })
-    }
-    else {
-      rows = JSON.parse(JSON.stringify(rows))
-      rows.forEach(row => {
-        data.toho.push(
-          {
-            "name": {
-              "en": row.name_en,
-              "jp": row.name_jp
-            },
-            "artist": {
-              "en": row.artist_en,
-              "jp": row.artist_jp
-            },
-            "image_url": row.image_url,
-            "version": row.version,
-            "bpm": row.bpm,
-            "level": {
-              "easy": row.level_easy,
-              "basic": row.level_basic,
-              "advanced": row.level_advanced,
-              "expert": row.level_expert,
-              "master": row.level_master,
-              "remaster": row.level_remaster
-            },
-            "listen": {
-              "youtube": row.listen_youtube,
-              "niconico": row.listen_niconico
-            },
-            "regionlocked": row.regionlocked
-          }
-        )
-      })
-    }
-    console.log("HIT TOHO")
-  })
-
-  // SEGA
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `sega` WHERE 1', (err, rows, fields) => {
-    if (err) {
-      data.push({
-        "reponse": "error",
-        "remark": err
-      })
-    }
-    else {
-      rows = JSON.parse(JSON.stringify(rows))
-      rows.forEach(row => {
-        data.sega.push(
-          {
-            "name": {
-              "en": row.name_en,
-              "jp": row.name_jp
-            },
-            "artist": {
-              "en": row.artist_en,
-              "jp": row.artist_jp
-            },
-            "image_url": row.image_url,
-            "version": row.version,
-            "bpm": row.bpm,
-            "level": {
-              "easy": row.level_easy,
-              "basic": row.level_basic,
-              "advanced": row.level_advanced,
-              "expert": row.level_expert,
-              "master": row.level_master,
-              "remaster": row.level_remaster
-            },
-            "listen": {
-              "youtube": row.listen_youtube,
-              "niconico": row.listen_niconico
-            },
-            "regionlocked": row.regionlocked
-          }
-        )
-      })
-    }
-    console.log("HIT SEGA")
-  })
-
-  // GAME
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `game` WHERE 1', (err, rows, fields) => {
-    if (err) {
-      data.push({
-        "reponse": "error",
-        "remark": err
-      })
-    }
-    else {
-      rows = JSON.parse(JSON.stringify(rows))
-      rows.forEach(row => {
-        data.game.push(
-          {
-            "name": {
-              "en": row.name_en,
-              "jp": row.name_jp
-            },
-            "artist": {
-              "en": row.artist_en,
-              "jp": row.artist_jp
-            },
-            "image_url": row.image_url,
-            "version": row.version,
-            "bpm": row.bpm,
-            "level": {
-              "easy": row.level_easy,
-              "basic": row.level_basic,
-              "advanced": row.level_advanced,
-              "expert": row.level_expert,
-              "master": row.level_master,
-              "remaster": row.level_remaster
-            },
-            "listen": {
-              "youtube": row.listen_youtube,
-              "niconico": row.listen_niconico
-            },
-            "regionlocked": row.regionlocked
-          }
-        )
-      })
-    }
-    console.log("HIT GAME")
-  })
-
-  // ORIG
-
-  connection.query('SELECT `name_en`, `name_jp`, `artist_en`, `artist_jp`, `image_url`, `version`, `bpm`, `level_easy`, `level_basic`, `level_advanced`, `level_expert`, `level_master`, `level_remaster`, `listen_youtube`, `listen_niconico`, `regionlocked` FROM `orig` WHERE 1', (err, rows, fields) => {
-    if (err) {
-      data.push({
-        "reponse": "error",
-        "remark": err
-      })
-    }
-    else {
-      rows = JSON.parse(JSON.stringify(rows))
-      rows.forEach(row => {
-        console.log(row)
-        data.orig.push(
-          {
-            "name": {
-              "en": row.name_en,
-              "jp": row.name_jp
-            },
-            "artist": {
-              "en": row.artist_en,
-              "jp": row.artist_jp
-            },
-            "image_url": row.image_url,
-            "version": row.version,
-            "bpm": row.bpm,
-            "level": {
-              "easy": row.level_easy,
-              "basic": row.level_basic,
-              "advanced": row.level_advanced,
-              "expert": row.level_expert,
-              "master": row.level_master,
-              "remaster": row.level_remaster
-            },
-            "listen": {
-              "youtube": row.listen_youtube,
-              "niconico": row.listen_niconico
-            },
-            "regionlocked": row.regionlocked
-          }
-        )
-      })
-    }
-    console.log("HIT ORIG")
-  })
-  
-  connection.end()
-  
-  res.send(data)
 })
+
 
 app.listen(process.env.PORT)
