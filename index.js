@@ -142,6 +142,7 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT POPS")
   })
 
   // NICO
@@ -186,6 +187,7 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT NICO")
   })
 
   // TOHO
@@ -230,6 +232,7 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT TOHO")
   })
 
   // SEGA
@@ -274,6 +277,7 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT SEGA")
   })
 
   // GAME
@@ -318,6 +322,7 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT GAME")
   })
 
   // ORIG
@@ -332,6 +337,7 @@ app.get('/all', (req, res) => {
     else {
       rows = JSON.parse(JSON.stringify(rows))
       rows.forEach(row => {
+        console.log(row)
         data.orig.push(
           {
             "name": {
@@ -362,10 +368,11 @@ app.get('/all', (req, res) => {
         )
       })
     }
+    console.log("HIT ORIG")
   })
-
+  
   connection.end()
-
+  
   res.send(data)
 })
 
